@@ -1,0 +1,7 @@
+.backToHome {
+    color: rgb(144, 228, 137);
+    text-decoration: none;
+    &:hover {
+        border-bottom: 2px solid grey;
+    }
+}

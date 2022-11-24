@@ -1,0 +1,128 @@
+/* Basic editor styles */
+.ProseMirror {
+    >*+* {
+        margin-top: 0.75em;
+    }
+
+    ul,
+    ol {
+        padding: 0 1rem;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        line-height: 1.1;
+    }
+
+    code {
+        background-color: rgba(#616161, 0.1);
+        color: #616161;
+    }
+
+    pre {
+        background: #0D0D0D;
+        color: #FFF;
+        font-family: 'JetBrainsMono', monospace;
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+
+        code {
+            color: inherit;
+            padding: 0;
+            background: none;
+            font-size: 0.8rem;
+        }
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    blockquote {
+        padding-left: 1rem;
+        border-left: 2px solid rgba(#0D0D0D, 0.1);
+    }
+
+    hr {
+        border: none;
+        border-top: 2px solid rgba(#0D0D0D, 0.1);
+        margin: 2rem 0;
+    }
+    
+}
+
+/*  editor  menu    */
+.tiptap-menu-bar {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: stretch;
+    
+    button {
+        flex-grow: 1;
+        background-color: white;
+        border: none;
+        border-bottom: 1px solid rgb(223, 223, 223);
+        border-right: 1px solid rgb(223, 223, 223);
+        padding: 4px;
+
+        &.is-active {
+            background-color: black;
+            color: white;
+        }
+
+        &.orange {
+            &.is-active {
+                background-color: #ffc078;
+            }
+            &:not(.is-active) {
+                color: #ffc078;
+            }
+        }
+
+        &.green {
+            &.is-active {
+                background-color: #8ce99a;
+            }
+        
+            &:not(.is-active) {
+                color: #8ce99a;
+            }
+        }
+
+        &.blue {
+            &.is-active {
+                background-color: #74c0fc;
+            }
+        
+            &:not(.is-active) {
+                color: #74c0fc;
+            }
+        }
+
+        &.purple {
+            &.is-active {
+                background-color: #b197fc;
+            }
+        
+            &:not(.is-active) {
+                color: #b197fc;
+            }
+        }
+
+        &.red {
+            &.is-active {
+                background-color: #ffa8a8;
+            }
+        
+            &:not(.is-active) {
+                color: #ffa8a8;
+            }
+        }
+    }
+}

@@ -1,0 +1,13 @@
+.wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // margin: 100px 0;
+
+    audio {
+        width: 100%;
+        max-width: 500px;
+        border: 1px solid grey;
+        background-color: #f1f3f4;
+    }
+}

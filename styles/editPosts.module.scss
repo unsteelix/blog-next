@@ -1,0 +1,98 @@
+.wrap {
+
+    .posts {
+        
+        .oneCell {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            border-bottom: 1px solid rgb(214, 214, 224);
+            
+            input {
+                color: rgb(22, 22, 22);
+                text-decoration: none;
+                border: none;
+                border-right: 1px solid rgb(214, 214, 224);
+                padding: 6px;
+    
+                &:focus {
+                    background-color: black;
+                    color: aliceblue;
+                }
+            }
+    
+            .index {
+                width: 50px;
+            }
+    
+            .slug {}
+    
+            .preview {}
+    
+            .cover {}
+    
+            .title {
+                width: 250px;
+            }
+    
+            .subTitle {
+                width: 150px;
+            }
+    
+            .del {
+                cursor: pointer;
+                padding: 0 10px;
+                color: rgb(255, 174, 174);
+                height: 27px;
+
+                &:hover {
+                    background-color: rgb(44, 44, 44);
+                    color: aliceblue;
+                }
+            }
+        }
+
+    }
+
+    .btns {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        .add {
+            color: rgb(36, 36, 36);
+            cursor: pointer;
+            width: 90px;
+            padding: 3px 10px 6px 10px;
+            text-align: center;
+    
+            &:hover {
+                background-color: rgb(44, 44, 44);
+                color: aliceblue;
+            }
+        }
+
+        .save {
+            color: rgb(36, 36, 36);
+            cursor: pointer;
+            width: 90px;
+            padding: 3px 10px 6px 10px;
+            text-align: center;
+
+            &:hover {
+                background-color: rgb(44, 44, 44);
+                color: aliceblue;
+            }
+        }
+
+    }
+
+    .edit {
+        color: rgb(125, 181, 255);
+        &:hover {
+            background-color: rgb(44, 44, 44);
+            color: aliceblue;
+        }
+    }
+}
