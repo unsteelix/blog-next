@@ -18,21 +18,21 @@ const ImageBLock = dynamic(() => import('../../components/blocks/imageBlock'), {
 
 const { picolaUrl, imageMainFormat, imageMainQuality } = constants;
 
-export async function getStaticPaths() {
-    const posts: IPosts = db.posts
-    const paths = Object.values(posts).map((post: IPost) => ({
-            params: {
-                ...post
-            }
-    }))
+// export async function getStaticPaths() {
+//     const posts: IPosts = db.posts
+//     const paths = Object.values(posts).map((post: IPost) => ({
+//             params: {
+//                 ...post
+//             }
+//     }))
 
-  return {
-    paths,
-    fallback: false,
-  };
-}
+//   return {
+//     paths,
+//     fallback: false,
+//   };
+// }
 
-export function getStaticProps({ params }: any) {
+export function getServerSideProps({ params }: any) {
     const { slug } = params;
     const posts: IPosts = db.posts
     let postData: IPost | undefined = Object.values(posts).find((p: IPost) => p.slug === slug)
@@ -40,8 +40,7 @@ export function getStaticProps({ params }: any) {
     return {
         props: {
             postData
-        },
-        revalidate: 60,
+        }
     };
 }
 
@@ -49,7 +48,7 @@ export default function Post({ postData }: any) {
     const { state, setState }: any = useContext(AppContext);
     const { wasFirstInteraction } = state;
     
-    const { id, title, subTitle, cover, blocks } = postData
+    const { title, subTitle, cover, blocks } = postData
 
     console.log('postData: ', postData)
 

@@ -4,15 +4,14 @@ import ListPost from '../components/listPost';
 import db from '../lib/db';
 import type { IPosts } from '../types/index'
 
-export function getStaticProps() {
+export function getServerSideProps() {
   
   const posts: IPosts = db.posts
 
   return {
     props: {
       posts
-    },
-    revalidate: 60
+    }
   }
 }
 
