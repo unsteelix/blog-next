@@ -50,12 +50,10 @@ export default function Post({ postData }: any) {
     
     const { title, subTitle, cover, blocks } = postData
 
-    console.log('postData: ', postData)
-
     const listBlocks: IBlock[] = Object.values(blocks)
     const sorted = listBlocks.sort((a,b) => (a.index > b.index) ? 1 : ((b.index > a.index) ? -1 : 0))
 
-    const renderBlock = ({ id, type, data }: {id: string, type: string, data: any}) => {
+    const RenderBlock = ({ id, type, data }: {id: string, type: string, data: any}) => {
 
         const map: any = {
             textBlock:  <TextBLock  key={'block-' + id} data={data} />,
@@ -64,7 +62,31 @@ export default function Post({ postData }: any) {
             videoBlock: <VideoBLock key={'block-' + id} data={data} />
         }
 
-        return map[type]
+        const [isShow, setIsShow] = useState(false)
+        useEffect(() => {
+            // set up observer
+            if(document){
+                const el = document.getElementById(`block-${id}`)
+                if(el){                
+                    const observer = new IntersectionObserver(entries => {
+                        entries.forEach(entry => {
+                            const intersecting = entry.isIntersecting;
+                            if(intersecting) {
+                                console.log('block ' + id + ' is intersect')
+                                setIsShow(true)
+                            }
+                        })
+                    })
+                    observer.observe(el)
+                }
+            }
+
+            return () => {};
+        }, []);
+
+        return <div id={`block-${id}`} className={`${styles.blockWrap} ${isShow ? styles.show : ''}`}>
+            {map[type]}    
+        </div>
     }
 
     const audio: any = {}
@@ -91,7 +113,16 @@ export default function Post({ postData }: any) {
         Object.values(audio).forEach((el: any) => el.pause())
     }
     
+    const [dimensions, setDimensions] = useState({w: 0, h: 0})
+    
     useEffect(() => {
+        if(document){
+            const w = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+            const h = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+            setDimensions({
+                w, h
+            })
+        }
         checkForAudioContent()
         if(!popupIsRendered){
             renderAudioPopup()
@@ -107,7 +138,7 @@ export default function Post({ postData }: any) {
         console.log('audio-' + audioId, command)
     }
 
-    const convertToUrl = (imgId: string) => `${picolaUrl}i/${imgId}?f=${imageMainFormat}&q=${imageMainQuality}&w=1400&h=800`;
+    const convertToUrl = (imgId: string) => `${picolaUrl}i/${imgId}?f=${imageMainFormat}&q=${imageMainQuality}&w=${dimensions.w}&h=${dimensions.h}`;
     
     // render popup with audio content explanation
     const [haveAudio, setHaveAudio] = useState(false)
@@ -141,7 +172,7 @@ export default function Post({ postData }: any) {
                     <div className={styles.subTitle}>{subTitle}</div>
                 </div>
                 <div className={styles.blocks}>
-                    {sorted.map(({ id, type, data }) => renderBlock({ id, type, data }))}
+                    {sorted.map(({ id, type, data }) => RenderBlock({ id, type, data }))}
                 </div>
                 {(haveAudio && !wasFirstInteraction) && (
                     <div className={styles.popup}>

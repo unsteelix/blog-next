@@ -1,4 +1,3 @@
-import styles from 'styles/blocks.module.scss';
 import ImageBlock from './editBlocks/imageBlock';
 import VideoBlock from './editBlocks/videoBlock';
 import AudioBlock from './editBlocks/audioBlock';
@@ -13,7 +12,7 @@ export default function Block({id, type, data, onChange}: {id: string, type: str
     const getBlockByType = (type: string, data: any) => {
 
         const blockMap: any = {
-            textBlock: <TextBlock data={data} onChange={onChange} />,
+            textBlock:  <TextBlock  data={data} onChange={onChange} />,
             imageBlock: <ImageBlock data={data} onChange={onChange} />,
             videoBlock: <VideoBlock data={data} onChange={onChange} />,
             audioBlock: <AudioBlock data={data} onChange={onChange} />
@@ -23,7 +22,7 @@ export default function Block({id, type, data, onChange}: {id: string, type: str
     }
     
     return (
-        <div className={styles.wrap}>
+        <div>
             {getBlockByType(type, data)}
         </div>
     )

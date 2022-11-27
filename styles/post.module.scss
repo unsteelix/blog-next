@@ -38,6 +38,16 @@
         background-color: white;
         padding: 100px 0;
 
+        .blockWrap {
+            min-height: 0vh;
+            opacity: 0;
+            transition: .7s all;
+
+            &.show {
+                opacity: 1;
+            }
+        }
+
         .oneBlock {
             
         }
