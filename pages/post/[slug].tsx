@@ -72,7 +72,6 @@ export default function Post({ postData }: any) {
                         entries.forEach(entry => {
                             const intersecting = entry.isIntersecting;
                             if(intersecting) {
-                                console.log('block ' + id + ' is intersect')
                                 setIsShow(true)
                             }
                         })
@@ -119,8 +118,12 @@ export default function Post({ postData }: any) {
         if(document){
             const w = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
             const h = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+
+            // scrollbar width
+            const bar = window.innerWidth - document.documentElement.clientWidth
+
             setDimensions({
-                w, h
+                w: w - bar, h
             })
         }
         checkForAudioContent()
