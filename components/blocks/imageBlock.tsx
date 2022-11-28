@@ -44,8 +44,8 @@ export default function ImageBlock({data}: any) {
     }
 
     const BackgroundImg = ({ images, size, isPreview }: {images: string[], size: {w: number, h: number}, isPreview: boolean}) => {
-        const { w } = size
-        const src = picolaUrl + 'i/' + images[0] + `?f=${imageMainFormat}&q=${imageMainQuality}&w=${w}`
+        const { w, h } = size
+        const src = picolaUrl + 'i/' + images[0] + `?f=${imageMainFormat}&q=${imageMainQuality}&w=${w}&h=${h}`
         const srcPreview = picolaUrl + 'i/' + images[0] + `?f=${imagePreviewFormat}&q=${imagePreviewQuality}&w=${imagePreviewWidth}`;
         return <div className={styles.backgroundImg} style={{backgroundImage: `url(${isPreview ? srcPreview : src})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundAttachment: 'fixed' }} ></div>
     }

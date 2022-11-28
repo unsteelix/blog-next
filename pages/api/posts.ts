@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import db from "../../lib/db";
-import type { IPost, IPosts, IBlock, IBlocks } from "../../types/index";
+import type { IPosts } from "../../types/index";
 
 export default function handler(
   req: NextApiRequest,
