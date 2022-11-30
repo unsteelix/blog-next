@@ -40,14 +40,24 @@ export default function ImageBlock({data}: any) {
         const { w } = size
         const src = picolaUrl + 'i/' + images[0] + `?f=${imageMainFormat}&q=${imageMainQuality}&w=${w}`;
         const srcPreview = picolaUrl + 'i/' + images[0] + `?f=${imagePreviewFormat}&q=${imagePreviewQuality}&w=${imagePreviewWidth}`;
-        return <img className={styles.wideImg} alt={src} src={isPreview ? srcPreview : src} />
+        //return <img className={styles.wideImg} alt={src} src={isPreview ? srcPreview : src} />
+        if(isPreview) {
+            return <div>Loading...</div>
+        } else {
+            return <img className={styles.wideImg} alt={src} src={src} />
+        }
     }
 
     const BackgroundImg = ({ images, size, isPreview }: {images: string[], size: {w: number, h: number}, isPreview: boolean}) => {
         const { w, h } = size
         const src = picolaUrl + 'i/' + images[0] + `?f=${imageMainFormat}&q=${imageMainQuality}&w=${w}&h=${h}`
         const srcPreview = picolaUrl + 'i/' + images[0] + `?f=${imagePreviewFormat}&q=${imagePreviewQuality}&w=${imagePreviewWidth}`;
-        return <div className={styles.backgroundImg} style={{backgroundImage: `url(${isPreview ? srcPreview : src})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundAttachment: 'fixed' }} ></div>
+        //return <div className={styles.backgroundImg} style={{backgroundImage: `url(${isPreview ? srcPreview : src})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundAttachment: 'fixed' }} ></div>
+        if(isPreview) {
+            return <div>Loading...</div>
+        } else {
+            return <div className={styles.backgroundImg} style={{backgroundImage: `url(${src})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundAttachment: 'fixed' }} ></div>
+        }
     }
 
     const PaddingImg = ({ images, size, type, isPreview }: {images: string[], size: {w: number, h: number}, type: string, isPreview: boolean}) => {
@@ -73,7 +83,12 @@ export default function ImageBlock({data}: any) {
             srcPreview = picolaUrl + 'i/' + img + `?f=${imagePreviewFormat}&q=${imagePreviewQuality}&h=${height}`;
         }
 
-        return <img className={styles.paddingImg} alt={src} src={isPreview ? srcPreview : src} />
+        if(isPreview) {
+            return <div>Loading...</div>
+        } else {
+            return <img className={styles.paddingImg} alt={src} src={src} />
+        }
+        //return <img className={styles.paddingImg} alt={src} src={isPreview ? srcPreview : src} />
     }
 
     const MultiImg = ({ images, size, isPreview }: {images: string[], size: {w: number, h: number}, isPreview: boolean}) => {
@@ -105,7 +120,13 @@ export default function ImageBlock({data}: any) {
                     srcPreview = picolaUrl + 'i/' + img + `?f=${imagePreviewFormat}&q=${imagePreviewQuality}&h=${height}`
                 }
 
-                return <img alt={img} src={isPreview ? srcPreview : src} key={img} />
+                if(isPreview) {
+                    return <div>Loading...</div>
+                } else {
+                    return <img alt={img} src={src} key={img} />
+                }
+                
+                //return <img alt={img} src={isPreview ? srcPreview : src} key={img} />
             })}
         </div>
     }
