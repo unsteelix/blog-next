@@ -121,7 +121,7 @@ export default function ImageBlock({data}: any) {
                 }
 
                 if(isPreview) {
-                    return <div>Loading...</div>
+                    return <div key={img}>Loading...</div>
                 } else {
                     return <img alt={img} src={src} key={img} />
                 }
