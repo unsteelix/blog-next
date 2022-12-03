@@ -4,15 +4,18 @@ import ListPost from '../components/listPost';
 import db from '../lib/db';
 import type { IPosts } from '../types/index'
 
-export function getServerSideProps() {
-  
-  const posts: IPosts = db.posts
+export async function getServerSideProps({ res }: any) {
+    res.setHeader(
+        'Cache-Control',
+        'no-cache, no-store, max-age=0, must-revalidate'
+    )
+    const posts: IPosts = db.posts
 
-  return {
-    props: {
-      posts
+    return {
+        props: {
+            posts
+        }
     }
-  }
 }
 
 export default function Home(props: { posts: IPosts }) {

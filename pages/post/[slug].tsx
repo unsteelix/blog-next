@@ -13,7 +13,7 @@ import { useContext } from "react";
 import { AppContext } from "../../context";
 
 const ImageBLock = dynamic(() => import('../../components/blocks/imageBlock'), {
-  ssr: false,
+  ssr: true,
 })
 
 const { picolaUrl, imageMainFormat, imageMainQuality } = constants;
@@ -32,7 +32,12 @@ const { picolaUrl, imageMainFormat, imageMainQuality } = constants;
 //   };
 // }
 
-export function getServerSideProps({ params }: any) {
+export async function getServerSideProps({ params, res }: any) {
+    res.setHeader(
+        'Cache-Control',
+        'no-cache, no-store, max-age=0, must-revalidate'
+    )
+    
     const { slug } = params;
     const posts: IPosts = db.posts
     let postData: IPost | undefined = Object.values(posts).find((p: IPost) => p.slug === slug)
