@@ -13,7 +13,7 @@ import { useContext } from "react";
 import { AppContext } from "../../context";
 
 const ImageBLock = dynamic(() => import('../../components/blocks/imageBlock'), {
-  ssr: true,
+  ssr: false,
 })
 
 const { picolaUrl, imageMainFormat, imageMainQuality } = constants;
@@ -52,7 +52,7 @@ export async function getServerSideProps({ params, res }: any) {
 export default function Post({ postData }: any) {
     const { state, setState }: any = useContext(AppContext);
     const { wasFirstInteraction } = state;
-    
+        
     const { title, subTitle, cover, blocks } = postData
 
     const listBlocks: IBlock[] = Object.values(blocks)
@@ -118,7 +118,8 @@ export default function Post({ postData }: any) {
     }
     
     const [dimensions, setDimensions] = useState({w: 0, h: 0})
-    
+    //const [isLoadingPage, setIsLoadingPage] = useState(true)
+
     useEffect(() => {
         if(document){
             const w = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
@@ -130,6 +131,8 @@ export default function Post({ postData }: any) {
             setDimensions({
                 w: w - bar, h
             })
+
+            //setIsLoadingPage(false)
         }
         checkForAudioContent()
         if(!popupIsRendered){
