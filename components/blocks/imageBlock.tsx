@@ -56,7 +56,7 @@ export default function ImageBlock({data}: any) {
         if(isPreview) {
             return <div>Loading...</div>
         } else {
-            return <div className={styles.backgroundImg} style={{backgroundImage: `url(${src})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundAttachment: 'fixed' }} ></div>
+            return <div className={styles.backgroundImg} style={{backgroundImage: `url(${src})`, backgroundPosition: 'top center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundAttachment: 'fixed' }} ></div>
         }
     }
 
