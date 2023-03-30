@@ -8,7 +8,7 @@ async function getData() {
   const headersList = headers();
   const host = headersList.get('host');
   const http = host?.includes('localhost') ? 'http' : 'https';
-  const domain = host?.includes('localhost') ? '127.0.0.1:3000' : 'host';
+  const domain = host?.includes('localhost') ? '127.0.0.1:3000' : 'localhost';
 
   const res = await fetch(`${http}://${domain}/api/posts`, { next: { revalidate: 5 } });
   //const res = await fetch(`http://127.0.0.1:3000/api/posts`, { cache: 'no-store' });
