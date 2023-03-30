@@ -1,166 +1,152 @@
+'use client';
+
+import dynamic from 'next/dynamic'
+
+import { useContext, useEffect, useState } from "react";
 import styles from 'styles/blocks.module.scss';
-import type { IBlocks, IPost } from '../types/index'
-import Image from 'next/image'
-import Link from 'next/link';
-import Block from '../components/block'
-import { useState } from 'react';
-import { getNewId } from '../lib/utils';
+import TextBLock from '../components/types/textBlock';
+import AudioBLock from '../components/types/audioBlock';
+import VideoBLock from '../components/types/videoBlock';
+//import ImageBLock from '../components/types/imageBlock';
+const ImageBLock = dynamic(() => import('../components/types/imageBlock'), { ssr: false })
+import { picolaUrl } from "../lib/constants";
+import { AppContext } from "../context";
 
-export default function Blocks({postId, blocksData}: {postId: string, blocksData: IBlocks}) {
-    const [blocks, setBlocks] = useState(blocksData);
-    const [isLoading, setIsLoading] = useState(false)
+export default function Blocks({ data } : { data: any[] }) {
 
-    const toArrAndSort = (rawBlocks: IBlocks) => Object.values(rawBlocks).sort((a: { index: number; },b: { index: number; }) => (a.index > b.index) ? 1 : ((b.index > a.index) ? -1 : 0))
+    //const { state, setState }: any = useContext(AppContext);
+    //const { wasFirstInteraction } = state;
 
-    const saveToDB = async () => {
-        setIsLoading(true)
+    const [wasFirstInteraction, setWasFirstInteraction] = useState(false)
 
-        const res = await fetch('/api/blocks', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify({
-                postId,
-                blocks
-            })
-        })
-        let data = await res.json();
+    // render popup with audio content explanation
+    const [haveAudio, setHaveAudio] = useState(false)
+    const checkForAudioContent = () => {
+        let haveAudio = false;
 
-        setBlocks(data)
-        setIsLoading(false)
-    }
-
-    const onChange = async (blockId: string, val: any) => {
-        setBlocks((init): any => {
-            const updated = {
-                ...init,
-            }
-            updated[blockId].data = val
-            return updated
-        })
-    }
-
-    const onIndexChange = (id: string, val: any, e: any) => {
-
-        if(e.type === 'change'){
-
-            setBlocks((init): any => ({
-                ...init,
-                [id]: {
-                    ...init[id],
-                    index: val
+        data.forEach(({ type, data }) => {
+            if(type === 'audioBlock'){
+                haveAudio = true
+            } else if(type === 'videoBlock') {
+                if(data.includes('mute=false')){
+                    haveAudio = true
                 }
-            }))
-
-        } else if (e.type === 'blur') {
-
-            setBlocks((init): any => {
-
-                const updated: any = {}
-                // меняем индекс
-                const list = toArrAndSort({ 
-                    ...init,
-                    [id]: {
-                        ...init[id],
-                        index: val
-                    }
-                })
-
-
-                // +1 ко всем кто больше
-                list.forEach((e, i) => {
-                    if(e.id !== id){
-                        if(e.index >= val){
-                            e.index += 1
-                        }
-                    }
-                })
-
-                // сортировка и чистка пробелов и разрывов
-                const dirt: any = {}
-                //  наполняю dirt
-                list.forEach(e => dirt[e.id] = e)
-                
-                toArrAndSort({...dirt}).forEach((e, i) => {
-                    updated[e.id] = {
-                        ...e,
-                        index: i
-                    }
-                })
-                
-                return updated
-            })
-
-        }
-    }
-
-    const addBtn = async (type: string) => {
-        const newId = getNewId()
-        const list = toArrAndSort(blocks)
-        
-        const newBlock = {
-            id: newId,
-            index: list.length > 0 ? list[list.length - 1].index + 1 : 1,
-            type,
-            data: '',
-        }
-
-        setBlocks((init): any => {
-            const updated = {
-                ...init,
-                [newId]: newBlock
             }
-            return updated
         })
+
+        if(haveAudio) {
+            setHaveAudio(true)
+        }  
     }
 
-    const delBtn = (blockId: string) => {
-        if(confirm('Delete ?')) {
-            setBlocks((init): any => {
-                const updated = {
-                    ...init
-                }
-                delete updated[blockId]
-                return updated
-            })
+
+    const RenderBlock = ({ id, type, data }: {id: string, type: string, data: any}) => {
+
+        const map: any = {
+            textBlock:  <TextBLock  key={'block-' + id} data={data} />,
+            imageBlock: <ImageBLock key={'block-' + id} data={data} />,
+            audioBlock: <AudioBLock key={'block-' + id} data={data} onAudioHandle={onAudioHandle} />,
+            videoBlock: <VideoBLock key={'block-' + id} data={data} />
         }
-    }
 
-    return (
-        <div className={styles.wrap}>
-            <div className={styles.blocks}>
-                {toArrAndSort(blocks).map(({id, type, data, index}: any) => (
-                    <div className={styles.oneRow} key={id}>
-                        <div className={styles.left}>
-                            <div className={styles.index}>
-                                <input type="text" value={index} onChange={(e) => onIndexChange(id, parseInt(e.target.value), e)} onBlur={(e) => onIndexChange(id, parseInt(e.target.value), e)} />
-                            </div>
-                            <div className={styles.del} onClick={() => delBtn(id)} >del</div>
-                        </div>
-                        <div className={styles.right}>
-                            {isLoading ? 'Loading...' : <Block id={id} type={type} data={data} onChange={(val: any) => onChange(id, val)} />}
-                        </div>
-                    </div>
-                ))}
-            </div>
-            <div className={styles.btns}>
-                <div className={styles.addText} onClick={() => addBtn('textBlock')}>
-                    Add text
-                </div>
-                <div className={styles.addImage} onClick={() => addBtn('imageBlock')}>
-                    Add image
-                </div>
-                <div className={styles.addVideo} onClick={() => addBtn('videoBlock')}>
-                    Add video
-                </div>
-                <div className={styles.addAudio} onClick={() => addBtn('audioBlock')}>
-                    Add audio
-                </div>
-                <div className={styles.save} onClick={saveToDB}>
-                    Save
-                </div>
-            </div>
+        const [isShow, setIsShow] = useState(false)
+        useEffect(() => {
+            // set up observer
+            if(document){
+                const el = document.getElementById(`block-${id}`)
+                if(el){                
+                    const observer = new IntersectionObserver(entries => {
+                        entries.forEach(entry => {
+                            const intersecting = entry.isIntersecting;
+                            if(intersecting) {
+                                setIsShow(true)
+                            }
+                        })
+                    })
+                    observer.observe(el)
+                }
+            }
+
+            return () => {};
+        }, []);
+
+        return <div id={`block-${id}`} className={`${styles.blockWrap} ${isShow ? styles.show : ''}`}>
+            {map[type]}    
         </div>
+    }
+
+
+
+    const audio: any = {}
+
+    /**
+     * obj with all audio elements on this page
+     * 
+     */
+    const renderAudio = () => {
+        data.forEach(bl => {
+            if(bl.type === 'audioBlock'){
+                const audioId = bl.data.split('\n')[0].trim()
+                const audioEl = new Audio(picolaUrl + 'f/' + audioId)
+                audio[audioId] = audioEl
+            }
+        })
+    }
+    let popupIsRendered = false
+    const renderAudioPopup = () => {
+        popupIsRendered = true
+    }
+
+    const destroyAllAudio = () => {
+        Object.values(audio).forEach((el: any) => el.pause())
+    }
+    
+    const [dimensions, setDimensions] = useState({w: 0, h: 0})
+    //const [isLoadingPage, setIsLoadingPage] = useState(true)
+
+    useEffect(() => {
+        if(document){
+            const w = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+            const h = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+
+            // scrollbar width
+            const bar = window.innerWidth - document.documentElement.clientWidth
+
+            setDimensions({
+                w: w - bar, h
+            })
+
+            //setIsLoadingPage(false)
+        }
+        checkForAudioContent()
+        if(!popupIsRendered){
+            renderAudioPopup()
+        }
+        renderAudio()        
+        return () => {
+            destroyAllAudio()
+        };
+    }, []);
+
+    const onAudioHandle = (audioId: string, command: string) => {
+        audio[audioId][command]()
+        console.log('audio-' + audioId, command)
+    }
+
+    return (<>
+        <div className={styles.blocks}>
+            {data.map(({ id, type, data }) => RenderBlock({ id, type, data }))}
+        </div>
+        {(haveAudio && !wasFirstInteraction) && (
+            <div className={styles.popup}>
+                <div className={styles.popupText}>
+                    В этом посте будет звук
+                </div>
+                <div className={styles.popupBtn} onClick={() => setWasFirstInteraction(true)}>
+                    Понятненько
+                </div>
+            </div>
+        )}
+    </>    
     )
 }

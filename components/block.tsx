@@ -1,9 +1,9 @@
-import ImageBlock from './editBlocks/imageBlock';
-import VideoBlock from './editBlocks/videoBlock';
-import AudioBlock from './editBlocks/audioBlock';
+import ImageBlock from './edit/types/imageBlock';
+import VideoBlock from './edit/types/videoBlock';
+import AudioBlock from './edit/types/audioBlock';
 import dynamic from 'next/dynamic'
 
-const TextBlock = dynamic(() => import('./editBlocks/textBlock'), {
+const TextBlock = dynamic(() => import('./edit/types/textBlock'), {
   ssr: false,
 })
 

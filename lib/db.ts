@@ -5,26 +5,26 @@ import proxyfull from "proxyfull";
 
 const defaultDB: { posts: IPosts } = {
   posts: {
-    kjhkhj11k: {
-      id: "kjhkhj11k",
-      slug: "testpage1",
+    bshssrtbs: {
+      id: "bshssrtbs",
+      slug: "page_2",
       preview: "975576d361_w1966_h2560",
-      cover: "fsdgsg",
+      cover: "975576d361_w1966_h2560",
       title: "title",
-      subTitle: "sub title",
+      subTitle: "subTitle",
       index: 0,
-      show: false,
+      show: true,
       blocks: {},
     },
-    kjhk22hjk: {
-      id: "kjhk22hjk",
-      slug: "testpage2",
+    oiuytj: {
+      id: "oiuytj",
+      slug: "page_1",
       preview: "975576d361_w1966_h2560",
-      cover: "title",
-      title: "afaafdadsf",
-      subTitle: "sub title",
+      cover: "975576d361_w1966_h2560",
+      title: "title",
+      subTitle: "subTitle",
       index: 1,
-      show: false,
+      show: true,
       blocks: {},
     },
   },
@@ -82,11 +82,11 @@ class DB {
         path: string
       ) => {
         try {
-          console.log(
-            `You are setting '${
-              typeof newValue === "string" ? newValue : JSON.stringify(newValue)
-            }' to '${String(property)}' property`
-          );
+          // console.log(
+          //   `You are setting '${
+          //     typeof newValue === "string" ? newValue : JSON.stringify(newValue)
+          //   }' to '${String(property)}' property`
+          // );
 
           // parse path and set value
           let t: any = this.target;

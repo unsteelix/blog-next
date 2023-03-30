@@ -10,7 +10,10 @@ const nextConfig = {
         // port: '2000',
       },
     ],
-  }
+  },
+  experimental: {
+    appDir: true,
+  },
 }
 
 module.exports = nextConfig
