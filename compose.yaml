@@ -6,8 +6,8 @@ services:
     ports:
       - 8888:3000
     volumes:
-      - blog2_blog2_volume:/app/volume
+      - blog_volume:/app/volume
     restart: always
 
 volumes:
-  blog2_blog2_volume:
+  blog_volume:
